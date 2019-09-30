@@ -1,0 +1,15 @@
+image: maven:latest
+cache:
+  paths:
+    - .m2/repository/
+    - target/
+
+
+package:
+  stage: package
+  script:
+    - mvn package
+  artifacts:
+    paths: target/injectenvbeforescm.hpi
+  only:
+    - master
