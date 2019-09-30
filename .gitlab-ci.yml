@@ -1,7 +1,6 @@
 image: maven:latest
 cache:
   paths:
-    - work/
     - target/
 
 stages:
