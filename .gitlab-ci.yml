@@ -2,6 +2,7 @@ image: maven:latest
 cache:
   paths:
     - target/
+    - .m2/
 
 stages:
     - build
