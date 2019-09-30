@@ -4,6 +4,10 @@ cache:
     - .m2/repository/
     - target/
 
+stages:
+    - build
+    - package
+    
 build:
   stage: build
   script:
