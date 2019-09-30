@@ -1,0 +1,4 @@
+<?jelly escape-by-default='true'?>
+<div>
+    Inject the environment variables provided in the properties file before scm pulling happens.
+</div>
