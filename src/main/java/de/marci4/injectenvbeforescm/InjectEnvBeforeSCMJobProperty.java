@@ -35,12 +35,36 @@ import javax.annotation.Nonnull;
 
 public class InjectEnvBeforeSCMJobProperty<T extends Job<?, ?>> extends JobProperty<T> {
 
+    private final String linuxPathPrefix;
+    private final String windowsPathPrefix;
+
     @DataBoundConstructor
-    public InjectEnvBeforeSCMJobProperty() { }
+    public InjectEnvBeforeSCMJobProperty(String linuxPathPrefix, String windowsPathPrefix) {
+        this.linuxPathPrefix = linuxPathPrefix;
+        this.windowsPathPrefix = windowsPathPrefix;
+    }
 
     @Override
     public JopPropertyDescriptorImpl getDescriptor() {
         return (JopPropertyDescriptorImpl) super.getDescriptor();
+    }
+
+    public String getLinuxPathPrefix() {
+        return linuxPathPrefix;
+    }
+
+    public String getWindowsPathPrefix() {
+        return windowsPathPrefix;
+    }
+
+    public boolean hasWindowsPathPrefix() {
+        return windowsPathPrefix != null && !windowsPathPrefix.isEmpty();
+    }
+    public boolean hasLinuxPathPrefix() {
+        return linuxPathPrefix != null && !linuxPathPrefix.isEmpty();
+    }
+    public boolean hasBothPrefixes() {
+        return hasWindowsPathPrefix() && hasLinuxPathPrefix();
     }
 
     @Extension
@@ -62,7 +86,7 @@ public class InjectEnvBeforeSCMJobProperty<T extends Job<?, ?>> extends JobPrope
             if (formData.isNullObject()|| formData.isEmpty()) {
                 return null;
             }
-            return (InjectEnvBeforeSCMJobProperty) super.newInstance(req, formData);
+            return (InjectEnvBeforeSCMJobProperty) super.newInstance(req, formData.getJSONObject("active"));
         }
     }
 }
