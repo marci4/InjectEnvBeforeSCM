@@ -39,8 +39,6 @@ public class InjectEnvBeforeSCMPropertiesContributor extends EnvironmentContribu
         if (Utils.isEnvInjectPluginInstalled() && Utils.isInjectEnvActive(job)) {
             listener.getLogger().println("[InjectEnvBeforeSCM] - Injection active");
             Utils.getEnvVariables(job, env, listener);
-        } else {
-            listener.getLogger().println("[InjectEnvBeforeSCM] - Injection inactive");
         }
     }
 }
