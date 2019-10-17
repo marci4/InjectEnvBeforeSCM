@@ -35,10 +35,14 @@ import java.io.IOException;
 public class InjectEnvBeforeSCMPropertiesContributor extends EnvironmentContributor {
 
     @Override
-    public void buildEnvironmentFor(@NonNull Job job,@NonNull EnvVars env,@NonNull TaskListener listener) throws IOException, InterruptedException {
+    public void buildEnvironmentFor(@NonNull Job job,@NonNull EnvVars env,@NonNull TaskListener listener) {
         if (Utils.isEnvInjectPluginInstalled() && Utils.isInjectEnvActive(job)) {
             listener.getLogger().println("[InjectEnvBeforeSCM] - Injection active");
-            Utils.getEnvVariables(job, env, listener);
+            try {
+                Utils.getEnvVariables(job, env, listener);
+            } catch (IOException | InterruptedException e) {
+                // We cannot really handle any exception here, so simple drop them
+            }
         }
     }
 }

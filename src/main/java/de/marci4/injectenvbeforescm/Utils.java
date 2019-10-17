@@ -32,10 +32,12 @@ import org.jenkinsci.plugins.envinject.EnvInjectJobProperty;
 import org.jenkinsci.plugins.envinject.EnvInjectJobPropertyInfo;
 import org.jenkinsci.plugins.envinject.service.PropertiesVariablesRetriever;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Map;
+import java.util.regex.Matcher;
 
 public class Utils {
 
@@ -54,31 +56,35 @@ public class Utils {
     public static InjectEnvBeforeSCMJobProperty getInjectEnvBeforeSCMJobProperty(Job job) {
         return (InjectEnvBeforeSCMJobProperty) job.getProperty(InjectEnvBeforeSCMJobProperty.class);
     }
-    public static void getEnvVariables(Job job, EnvVars env, TaskListener listener) {
-        EnvInjectJobProperty jobProperty = (EnvInjectJobProperty) job.getProperty(EnvInjectJobProperty.class);
+
+    public static EnvInjectJobProperty getEnvInjectJobProperty(Job job) {
+        return (EnvInjectJobProperty) job.getProperty(EnvInjectJobProperty.class);
+    }
+
+    public static boolean getEnvVariables(Job job, EnvVars env, TaskListener listener) throws IOException, InterruptedException {
+        EnvInjectJobProperty jobProperty = getEnvInjectJobProperty(job);
         if (jobProperty != null && jobProperty.isOn()) {
             EnvInjectJobPropertyInfo jobPropertyInfo = jobProperty.getInfo();
 
             // Processes "Properties Content"
             if (jobPropertyInfo != null) {
                 String propertyFilePath = jobPropertyInfo.getPropertiesFilePath();
-                if (propertyFilePath != null) {
-                    propertyFilePath = Utils.updatePathToOs(job, listener, propertyFilePath);
+                if (propertyFilePath != null && !propertyFilePath.isEmpty()) {
+                    propertyFilePath = Utils.updatePropertyFilePathToOperatingSystem(job, listener, propertyFilePath);
                     EnvInjectLogger logger = new EnvInjectLogger(listener);
                     PropertiesVariablesRetriever propertiesVariablesRetriever = new PropertiesVariablesRetriever(propertyFilePath, null, env, logger);
-                    try {
-                        Map<String, String> result = propertiesVariablesRetriever.invoke(new File(""), null);
-                        if (result != null) {
-                            env.putAll(result);
-                        }
-                    } catch (IOException | InterruptedException e) {
+                    Map<String, String> result = propertiesVariablesRetriever.invoke(new File(""), null);
+                    if (result != null) {
+                        env.putAll(result);
                     }
+                    return true;
                 }
             }
         }
+        return false;
     }
 
-    private static String updatePathToOs(Job job, TaskListener listener, String propertyFilePath) {
+    public static String updatePropertyFilePathToOperatingSystem(Job job, TaskListener listener, @Nonnull String propertyFilePath) {
         InjectEnvBeforeSCMJobProperty injectEnvBeforeSCMJobProperty = Utils.getInjectEnvBeforeSCMJobProperty(job);
         String result = propertyFilePath;
         String osName = System.getProperty("os.name").toLowerCase();
@@ -86,13 +92,13 @@ public class Utils {
             if (osName.contains("win")) {
                 if (propertyFilePath.startsWith(injectEnvBeforeSCMJobProperty.getLinuxPathPrefix())) {
                     listener.getLogger().println("[InjectEnvBeforeSCM] - Detected linux path on a windows slave --> replacing prefix");
-                    result = propertyFilePath.replaceFirst(injectEnvBeforeSCMJobProperty.getLinuxPathPrefix(), injectEnvBeforeSCMJobProperty.getWindowsPathPrefix());
+                    result = injectEnvBeforeSCMJobProperty.getWindowsPathPrefix() + propertyFilePath.substring(injectEnvBeforeSCMJobProperty.getLinuxPathPrefix().length());
                 }
             } else {
                 // Linux
                 if (propertyFilePath.startsWith(injectEnvBeforeSCMJobProperty.getWindowsPathPrefix())) {
                     listener.getLogger().println("[InjectEnvBeforeSCM] - Detected windows path on a linux slave --> replacing prefix");
-                    result = propertyFilePath.replaceFirst(injectEnvBeforeSCMJobProperty.getWindowsPathPrefix(), injectEnvBeforeSCMJobProperty.getLinuxPathPrefix());
+                    result = injectEnvBeforeSCMJobProperty.getLinuxPathPrefix() + propertyFilePath.substring(injectEnvBeforeSCMJobProperty.getWindowsPathPrefix().length());
                 }
             }
         }
