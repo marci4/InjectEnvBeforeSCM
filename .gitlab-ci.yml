@@ -6,6 +6,7 @@ cache:
 
 stages:
     - build
+    - test
     - package
     
 build:
@@ -13,6 +14,10 @@ build:
   script:
     - mvn compile
 
+test:
+  stage: test
+  script:
+    - mvn test
 
 package:
   stage: package
