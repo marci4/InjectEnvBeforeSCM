@@ -1,5 +1,5 @@
 ## 0.0.4 
-
+- \#4 - Create basic tests (and fixed a few issues found by the tests)
 - \#3 - Support Jenkins >= 2.150
 
 ## 0.0.3
