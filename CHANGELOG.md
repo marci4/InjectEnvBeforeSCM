@@ -1,3 +1,7 @@
+## 0.0.4 
+
+- \#3 - Support Jenkins >= 2.150
+
 ## 0.0.3
 
 - Removed log message if the plugin is inactive
