@@ -9,11 +9,11 @@
     </parent>
     <groupId>io.jenkins.plugins</groupId>
     <artifactId>injectenvbeforescm</artifactId>
-    <version>0.0.4</version>
+    <version>0.0.5</version>
     <packaging>hpi</packaging>
     <properties>
         <!-- Baseline Jenkins version you use to build the plugin. Users must have this version or newer to run. -->
-        <jenkins.version>2.150</jenkins.version>
+        <jenkins.version>2.277.1</jenkins.version>
         <java.level>8</java.level>
         <!-- Other properties you may want to use:
           ~ jenkins-test-harness.version: Jenkins Test Harness version you use to test the plugin. For Jenkins version >= 1.580.1 use JTH 2.0 or higher.
@@ -31,6 +31,26 @@
     </licenses>
     <dependencies>
         <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.30</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>1.7.30</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>log4j-over-slf4j</artifactId>
+            <version>1.7.30</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk14</artifactId>
+            <version>1.7.30</version>
+        </dependency>
+        <dependency>
             <groupId>org.jenkins-ci.plugins</groupId>
             <artifactId>structs</artifactId>
             <version>1.19</version>
@@ -39,6 +59,11 @@
             <groupId>org.jenkins-ci.plugins</groupId>
             <artifactId>envinject</artifactId>
             <version>1.92</version>
+        </dependency>
+        <dependency>
+            <groupId>com.mig82</groupId>
+            <artifactId>folder-properties</artifactId>
+            <version>1.2.1</version>
         </dependency>
         <dependency>
             <groupId>org.jenkins-ci.plugins.workflow</groupId>
