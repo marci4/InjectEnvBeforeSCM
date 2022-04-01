@@ -173,6 +173,16 @@ public class UtilsTest {
         job.addProperty(injectEnvBeforeSCMJobProperty);
         assertFalse(Utils.getEnvVariables(job, vars, listener));
     }
+
+    @Test
+    public void shouldNotRunDueToDisabledFolderProperties() throws Exception {
+        FreeStyleProject job = jenkins.createFreeStyleProject();
+        TaskListener listener = jenkins.createTaskListener();
+        EnvVars vars = new EnvVars();
+        InjectEnvBeforeSCMJobProperty injectEnvBeforeSCMJobProperty = new InjectEnvBeforeSCMJobProperty("\\tmp\\helga\\", "C:\\Users\\");
+        job.addProperty(injectEnvBeforeSCMJobProperty);
+        assertFalse(Utils.getEnvVariables(job, vars, listener));
+    }
     @Test
     public void shouldNotRunDueToMissingEnvInjectJobPropertyInfo() throws Exception {
         FreeStyleProject job = jenkins.createFreeStyleProject();

@@ -38,6 +38,7 @@ public class InjectEnvBeforeSCMJobProperty<T extends Job<?, ?>> extends JobPrope
     private final String linuxPathPrefix;
     private final String windowsPathPrefix;
 
+
     @DataBoundConstructor
     public InjectEnvBeforeSCMJobProperty(String linuxPathPrefix, String windowsPathPrefix) {
         this.linuxPathPrefix = linuxPathPrefix;
@@ -56,6 +57,7 @@ public class InjectEnvBeforeSCMJobProperty<T extends Job<?, ?>> extends JobPrope
     public String getWindowsPathPrefix() {
         return windowsPathPrefix;
     }
+
 
     public boolean hasWindowsPathPrefix() {
         return windowsPathPrefix != null && !windowsPathPrefix.isEmpty();
