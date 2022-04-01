@@ -23,7 +23,11 @@
 
 package de.marci4.injectenvbeforescm;
 
+import com.mig82.folders.properties.FolderProperties;
+import com.mig82.folders.properties.PropertiesLoader;
+import com.mig82.folders.wrappers.ParentFolderBuildWrapper;
 import hudson.EnvVars;
+import hudson.model.FreeStyleProject;
 import hudson.model.Job;
 import hudson.model.TaskListener;
 import jenkins.model.Jenkins;
@@ -37,7 +41,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Map;
-import java.util.regex.Matcher;
 
 public class Utils {
 
@@ -61,11 +64,24 @@ public class Utils {
         return (EnvInjectJobProperty) job.getProperty(EnvInjectJobProperty.class);
     }
 
+    public static boolean isInjectFolderPropertiesActive(Job job) {
+        if (job instanceof FreeStyleProject) {
+            FreeStyleProject freeStyleProject = (FreeStyleProject)job;
+            try {
+                return (ParentFolderBuildWrapper) freeStyleProject.getBuildWrappersList().get(ParentFolderBuildWrapper.class) != null;
+            } catch (Exception e) {
+                // Ignore
+            }
+        }
+        return false;
+    }
+
+
     public static boolean getEnvVariables(Job job, EnvVars env, TaskListener listener) throws IOException, InterruptedException {
         EnvInjectJobProperty jobProperty = getEnvInjectJobProperty(job);
+        boolean propertiesLoaded = false;
         if (jobProperty != null && jobProperty.isOn()) {
             EnvInjectJobPropertyInfo jobPropertyInfo = jobProperty.getInfo();
-
             // Processes "Properties Content"
             if (jobPropertyInfo != null) {
                 String propertyFilePath = jobPropertyInfo.getPropertiesFilePath();
@@ -77,11 +93,17 @@ public class Utils {
                     if (result != null) {
                         env.putAll(result);
                     }
-                    return true;
+                    propertiesLoaded =  true;
                 }
             }
         }
-        return false;
+        if (Utils.isInjectEnvActive(job) && Utils.isInjectFolderPropertiesActive(job)) {
+            listener.getLogger().println("[InjectEnvBeforeSCM] - Injecting folder properties");
+            EnvVars result = PropertiesLoader.loadFolderProperties(job);
+            env.putAll(result);
+            propertiesLoaded = true;
+        }
+        return propertiesLoaded;
     }
 
     public static String updatePropertyFilePathToOperatingSystem(Job job, TaskListener listener, @Nonnull String propertyFilePath) {
