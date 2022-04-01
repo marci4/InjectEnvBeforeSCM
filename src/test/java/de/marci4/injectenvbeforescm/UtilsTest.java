@@ -228,12 +228,7 @@ public class UtilsTest {
         job.addProperty(envInjectJobProperty);
         InjectEnvBeforeSCMJobProperty injectEnvBeforeSCMJobProperty = new InjectEnvBeforeSCMJobProperty("\\tmp\\helga\\", "C:\\Users\\");
         job.addProperty(injectEnvBeforeSCMJobProperty);
-        try {
-            Utils.getEnvVariables(job, vars, listener);
-            fail();
-        }catch (IOException e) {
-            // When we get the exception, everything else works perfect
-        }
+        Utils.getEnvVariables(job, vars, listener);
     }
 
 }
