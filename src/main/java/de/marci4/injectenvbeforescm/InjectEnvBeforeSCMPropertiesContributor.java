@@ -26,6 +26,8 @@ package de.marci4.injectenvbeforescm;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.EnvVars;
 import hudson.Extension;
+import hudson.matrix.MatrixConfiguration;
+import hudson.matrix.MatrixProject;
 import hudson.model.*;
 
 import java.io.IOException;
@@ -36,6 +38,10 @@ public class InjectEnvBeforeSCMPropertiesContributor extends EnvironmentContribu
 
     @Override
     public void buildEnvironmentFor(@NonNull Job job,@NonNull EnvVars env,@NonNull TaskListener listener) {
+        // Determine the project of a matrix configuration
+        if (job instanceof MatrixConfiguration) {
+            job = ((MatrixConfiguration)job).getParent();
+        }
         if (Utils.isEnvInjectPluginInstalled() && Utils.isInjectEnvActive(job)) {
             listener.getLogger().println("[InjectEnvBeforeSCM] - Injection active");
             try {

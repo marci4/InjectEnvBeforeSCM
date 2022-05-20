@@ -1,3 +1,6 @@
+## 0.0.7
+- Folder Properties for configurations of a matrix job
+
 ## 0.0.6
 - Folder Properties for matrix jobs
 
