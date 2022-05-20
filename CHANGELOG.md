@@ -1,3 +1,9 @@
+## 0.0.6
+- Folder Properties for matrix jobs
+
+## 0.0.5
+- Folder Properties for projects
+
 ## 0.0.4 
 - \#4 - Create basic tests (and fixed a few issues found by the tests)
 - \#3 - Support Jenkins >= 2.150

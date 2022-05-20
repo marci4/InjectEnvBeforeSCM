@@ -1,6 +1,7 @@
 package de.marci4.injectenvbeforescm;
 
 import hudson.EnvVars;
+import hudson.matrix.MatrixProject;
 import hudson.model.FreeStyleProject;
 import hudson.model.TaskListener;
 import org.jenkinsci.plugins.envinject.EnvInjectJobProperty;
@@ -26,6 +27,14 @@ public class UtilsTest {
         InjectEnvBeforeSCMJobProperty injectEnvProperty = Utils.getInjectEnvBeforeSCMJobProperty(job);
         assertNotNull(injectEnvProperty);
         assertTrue(Utils.isInjectEnvActive(job));
+
+        MatrixProject matrixJob = jenkins.createProject(MatrixProject.class, "test");
+        injectEnvBeforeSCMJobProperty = new InjectEnvBeforeSCMJobProperty(null, null);
+        matrixJob.addProperty(injectEnvBeforeSCMJobProperty);
+
+        injectEnvProperty = Utils.getInjectEnvBeforeSCMJobProperty(matrixJob);
+        assertNotNull(injectEnvProperty);
+        assertTrue(Utils.isInjectEnvActive(matrixJob));
     }
     @Test
     public void shouldNotContainInjectEnvProperty() throws Exception {

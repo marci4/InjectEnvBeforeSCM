@@ -23,10 +23,10 @@
 
 package de.marci4.injectenvbeforescm;
 
-import com.mig82.folders.properties.FolderProperties;
 import com.mig82.folders.properties.PropertiesLoader;
 import com.mig82.folders.wrappers.ParentFolderBuildWrapper;
 import hudson.EnvVars;
+import hudson.matrix.MatrixProject;
 import hudson.model.FreeStyleProject;
 import hudson.model.Job;
 import hudson.model.TaskListener;
@@ -69,6 +69,14 @@ public class Utils {
             FreeStyleProject freeStyleProject = (FreeStyleProject)job;
             try {
                 return (ParentFolderBuildWrapper) freeStyleProject.getBuildWrappersList().get(ParentFolderBuildWrapper.class) != null;
+            } catch (Exception e) {
+                // Ignore
+            }
+        }
+        if (job instanceof MatrixProject) {
+            MatrixProject matrixProject = (MatrixProject)job;
+            try {
+                return (ParentFolderBuildWrapper) matrixProject.getBuildWrappersList().get(ParentFolderBuildWrapper.class) != null;
             } catch (Exception e) {
                 // Ignore
             }
