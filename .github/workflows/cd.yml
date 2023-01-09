@@ -9,4 +9,4 @@ on:
 
 jobs:
   maven-cd:
-    uses: marci4.de/github-reusable-workflows/.github/workflows/maven-cd.yml@v1
+    uses: marci4/github-reusable-workflows/.github/workflows/maven-cd.yml@v1
