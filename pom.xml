@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.jenkins-ci.plugins</groupId>
         <artifactId>plugin</artifactId>
-        <version>3.43</version>
+        <version>4.53</version>
         <relativePath />
     </parent>
     <groupId>io.jenkins.plugins</groupId>
@@ -131,13 +131,6 @@
             <groupId>org.jenkins-ci.plugins</groupId>
             <artifactId>matrix-project</artifactId>
             <version>1.17</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jenkins-ci.plugins</groupId>
-            <artifactId>matrix-project</artifactId>
-            <version>1.17</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
     <dependencyManagement>
@@ -156,15 +149,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <!-- If you want this to appear on the wiki page:
-    <developers>
-      <developer>
-        <id>bhacker</id>
-        <name>Bob Q. Hacker</name>
-        <email>bhacker@nowhere.net</email>
-      </developer>
-    </developers> -->
     <repositories>
         <repository>
             <id>repo.jenkins-ci.org</id>
