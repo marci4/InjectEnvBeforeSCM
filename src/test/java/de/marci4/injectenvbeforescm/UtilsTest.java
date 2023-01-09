@@ -242,7 +242,7 @@ public class UtilsTest {
         EnvVars vars = new EnvVars();
         EnvInjectJobProperty envInjectJobProperty = new EnvInjectJobProperty();
         envInjectJobProperty.setOn(true);
-        EnvInjectJobPropertyInfo envInjectJobPropertyInfo = new EnvInjectJobPropertyInfo("C:\\temp", "", "", "", "", true);
+        EnvInjectJobPropertyInfo envInjectJobPropertyInfo = new EnvInjectJobPropertyInfo("C:\\temp_unknown_folder", "", "", "", "", true);
         envInjectJobProperty.setInfo(envInjectJobPropertyInfo);
         job.addProperty(envInjectJobProperty);
         InjectEnvBeforeSCMJobProperty injectEnvBeforeSCMJobProperty = new InjectEnvBeforeSCMJobProperty("\\tmp\\helga\\", "C:\\Users\\");
